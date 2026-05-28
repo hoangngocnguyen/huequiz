@@ -214,9 +214,9 @@ const Ranking: React.FC = () => {
     : 0;
 
   return (
-    <main className="w-full max-w-5xl mx-auto px-4 py-6 sm:py-10">
-      <section className="relative overflow-hidden rounded-[2rem] border-4 border-white bg-white/85 px-5 py-6 shadow-[0_22px_50px_rgba(0,131,143,0.14)] backdrop-blur sm:px-8">
-        <div className="absolute inset-x-0 top-0 h-2 bg-gradient-to-r from-[#00ACC1] via-[#7DD3C7] to-[#FFD166]" />
+    <main>
+      <section className="relative overflow-hidden rounded-4xl border-4 border-white bg-white/85 px-5 py-6 shadow-[0_22px_50px_rgba(0,131,143,0.14)] backdrop-blur sm:px-8">
+        <div className="absolute inset-x-0 top-0 h-2 bg-linear-to-r from-[#00ACC1] via-[#7DD3C7] to-[#FFD166]" />
 
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -245,7 +245,7 @@ const Ranking: React.FC = () => {
         <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-3">
           {/* Thẻ 1 */}
           <div className="flex items-center justify-between gap-2 rounded-2xl bg-[#F1FBFC] px-3 py-2.5 sm:px-4">
-            <div className="min-w-0 truncate text-[10px] font-black uppercase tracking-[0.05em] text-[#00ACC1] sm:text-[11px] sm:tracking-[0.1em]">
+            <div className="min-w-0 truncate text-[10px] font-black uppercase tracking-wider text-[#00ACC1] sm:text-[11px] sm:tracking-widest">
               Người chơi
             </div>
             <div className="shrink-0 text-lg font-black text-[#263238] sm:text-xl md:text-2xl">
@@ -255,7 +255,7 @@ const Ranking: React.FC = () => {
 
           {/* Thẻ 2 */}
           <div className="flex items-center justify-between gap-2 rounded-2xl bg-[#FFF8DD] px-3 py-2.5 sm:px-4">
-            <div className="min-w-0 truncate text-[10px] font-black uppercase tracking-[0.05em] text-[#B77900] sm:text-[11px] sm:tracking-[0.1em]">
+            <div className="min-w-0 truncate text-[10px] font-black uppercase tracking-wider text-[#B77900] sm:text-[11px] sm:tracking-widest">
               Chính xác
             </div>
             <div className="shrink-0 text-lg font-black text-[#263238] sm:text-xl md:text-2xl">
@@ -265,7 +265,7 @@ const Ranking: React.FC = () => {
 
           {/* Thẻ 3: Thêm col-span-2 trên mobile để nó dàn đều đẹp mắt, lên sm thì trả về bình thường */}
           <div className="col-span-2 flex items-center justify-between gap-2 rounded-2xl bg-[#EFF8F0] px-3 py-2.5 sm:col-span-1 sm:px-4">
-            <div className="min-w-0 truncate text-[10px] font-black uppercase tracking-[0.05em] text-[#2E7D32] sm:text-[11px] sm:tracking-[0.1em]">
+            <div className="min-w-0 truncate text-[10px] font-black uppercase tracking-wider text-[#2E7D32] sm:text-[11px] sm:tracking-widest">
               Thời gian tốt nhất
             </div>
             <div className="shrink-0 text-lg font-black text-[#263238] sm:text-xl md:text-2xl">
@@ -276,24 +276,24 @@ const Ranking: React.FC = () => {
       </section>
 
       {loading ? (
-        <div className="mt-8 rounded-[2rem] border-4 border-white bg-white/80 p-8 text-center text-lg font-black text-[#00838F] shadow-lg animate-pulse">
+        <div className="mt-8 rounded-4xl border-4 border-white bg-white/80 p-8 text-center text-lg font-black text-[#00838F] shadow-lg animate-pulse">
           Đang tải bảng xếp hạng...
         </div>
       ) : error && ranking.length === 0 ? (
-        <div className="mt-8 rounded-[2rem] border-4 border-white bg-white/80 p-8 text-center font-black text-red-500 shadow-lg">
+        <div className="mt-8 rounded-4xl border-4 border-white bg-white/80 p-8 text-center font-black text-red-500 shadow-lg">
           {error}
         </div>
       ) : (
         <>
           {visibleRanking.length === 0 ? (
-            <section className="mt-6 rounded-[2rem] border-4 border-white bg-white/90 p-8 text-center font-bold text-[#546E7A] shadow-[0_18px_44px_rgba(0,131,143,0.12)]">
+            <section className="mt-6 rounded-4xl border-4 border-white bg-white/90 p-8 text-center font-bold text-[#546E7A] shadow-[0_18px_44px_rgba(0,131,143,0.12)]">
               Chưa có dữ liệu xếp hạng.
             </section>
           ) : (
             /* Bỏ overflow-hidden và bg-white của section ngoài để biến các item bên trong thành thẻ độc lập */
             <section className="mt-6 space-y-3">
               {/* Header ẩn trên mobile, hiện trên desktop với giao diện sạch sẽ */}
-              <div className="hidden grid-cols-[64px_minmax(0,1.3fr)_96px_92px_88px_150px] items-center gap-3 px-6 py-2 text-[11px] font-black uppercase tracking-[0.1em] text-[#007C89]/70 sm:grid">
+              <div className="hidden grid-cols-[64px_minmax(0,1.3fr)_96px_92px_88px_150px] items-center gap-3 px-6 py-2 text-[11px] font-black uppercase tracking-widest text-[#007C89]/70 sm:grid">
                 <span>Hạng</span>
                 <span>Tên người chơi</span>
                 <span className="text-center">Đúng/Tổng</span>
@@ -314,7 +314,7 @@ const Ranking: React.FC = () => {
                       key={`${entry.name}-${entry.played_at || rank}`}
                       className={`grid grid-cols-[48px_minmax(0,1fr)_64px_64px] items-center gap-2 rounded-2xl border-2 border-white px-3 py-3 shadow-[0_4px_12px_rgba(0,131,143,0.04)] transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_8px_20px_rgba(0,131,143,0.08)] sm:grid-cols-[64px_minmax(0,1.3fr)_96px_92px_88px_150px] sm:gap-3 sm:px-5 sm:py-3.5 ${
                         style
-                          ? `bg-gradient-to-r ${style.shell} border-l-4`
+                          ? `bg-linear-to-r ${style.shell} border-l-4`
                           : isCurrentUser
                             ? "bg-[#FFFDE7] border-l-4 border-l-[#FBC02D]"
                             : "bg-white/90 hover:bg-white"
@@ -394,7 +394,7 @@ const Ranking: React.FC = () => {
 
           {/* Vị trí của bạn (Nếu ngoài top 10) */}
           {userName && userRank && userRank > 10 && (
-            <div className="mt-6 rounded-2xl border-4 border-white bg-gradient-to-r from-[#FFF9C4] to-[#FFF59D] p-4 text-center font-black text-[#8A5A00] shadow-md animate-bounce-short">
+            <div className="mt-6 rounded-2xl border-4 border-white bg-linear-to-r from-[#FFF9C4] to-[#FFF59D] p-4 text-center font-black text-[#8A5A00] shadow-md animate-bounce-short">
               🎯 Vị trí hiện tại của bạn:{" "}
               <span className="text-xl text-[#6D4C41]">#{userRank}</span>
             </div>
