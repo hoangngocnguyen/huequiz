@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 function App() {
   return (
     <div className="w-full max-w-xl mx-auto px-4 py-6 sm:py-10">
-      <Router>
+      <Router basename="/huequiz">
         <Routes>
           <Route path="/" element={<HueQuiz />} />
           <Route path="/ranking" element={<Ranking />} />
