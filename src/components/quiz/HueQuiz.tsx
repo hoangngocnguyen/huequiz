@@ -17,7 +17,7 @@ const HueQuiz: React.FC = () => {
     result: <ResultScreen />,
   };
 
-  return <div className="">{SCREENS[ui]}</div>;
+  return <div className="w-full max-w-xl mx-auto px-4 py-6 sm:py-10">{SCREENS[ui]}</div>;
 };
 
 export default HueQuiz;

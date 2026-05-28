@@ -6,7 +6,7 @@ export default function WelcomeScreen() {
   return (
     <div className="text-center">
       <div className="relative inline-block mb-6">
-        <span className="text-8xl">🥥</span>
+        <span className="text-8xl">🪷</span>
         <span className="absolute -top-2 -right-2 text-4xl animate-pulse">
           ✨
         </span>

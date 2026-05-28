@@ -214,7 +214,7 @@ const Ranking: React.FC = () => {
     : 0;
 
   return (
-    <main>
+    <main className="w-full max-w-5xl mx-auto px-4 py-6 sm:py-10">
       <section className="relative overflow-hidden rounded-4xl border-4 border-white bg-white/85 px-5 py-6 shadow-[0_22px_50px_rgba(0,131,143,0.14)] backdrop-blur sm:px-8">
         <div className="absolute inset-x-0 top-0 h-2 bg-linear-to-r from-[#00ACC1] via-[#7DD3C7] to-[#FFD166]" />
 
