@@ -1,5 +1,8 @@
 import { create } from "zustand";
 
+
+export type Language = "en" | "vi";
+
 const API_URL =
   "https://script.google.com/macros/s/AKfycbxIa6RYcOSXveGhJb6b9i-cP0Onm9dSNKsevehe0hsSQFBVZpjngxDykvKI10MmO_AJwg/exec";
 const QUESTIONS_CACHE_KEY = "hueQuizQuestions";
