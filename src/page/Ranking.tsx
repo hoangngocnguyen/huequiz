@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "../hooks/useTranslation";
 
 const API_URL =
   "https://script.google.com/macros/s/AKfycbzSgdnMfpJ4h2EAdBJi8U7n5uiphFxuQFpuxFGbyhmFyiY2Fo3ZMhW51HnNficMQ2no4Q/exec";
@@ -110,9 +111,9 @@ const formatAccuracy = (value: number) => {
   return `${Math.round(normalized)}%`;
 };
 
-const formatDate = (timestamp?: number) => {
-  if (!timestamp) return "Chưa có dữ liệu";
-  return new Intl.DateTimeFormat("vi-VN", {
+const formatDate = (timestamp: number | undefined, emptyText: string, locale: string) => {
+  if (!timestamp) return emptyText;
+  return new Intl.DateTimeFormat(locale, {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -160,6 +161,7 @@ const getUserRank = (ranking: RankingEntry[], userName: string) => {
 };
 
 const Ranking: React.FC = () => {
+  const t = useTranslation();
   const [ranking, setRanking] = useState<RankingEntry[]>(() => readCachedRanking());
   const [loading, setLoading] = useState(() => readCachedRanking().length === 0);
   const [error, setError] = useState("");
@@ -194,17 +196,17 @@ const Ranking: React.FC = () => {
           });
           setUserRank(getUserRank(sorted, userName));
         } else if (cachedRanking.length === 0) {
-          setError("Dữ liệu bảng xếp hạng không hợp lệ.");
+          setError(t.ranking.invalidData);
         }
       } catch {
-        setError("Không thể tải bảng xếp hạng.");
+        setError(t.ranking.loadError);
       } finally {
         setLoading(false);
       }
     };
 
     fetchRanking();
-  }, [userName]);
+  }, [t, userName]);
 
   const visibleRanking = useMemo(() => ranking.slice(0, 10), [ranking]);
   const totalPlayers = ranking.length;
@@ -222,14 +224,13 @@ const Ranking: React.FC = () => {
           <div>
             <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-[#E0F7FA] px-4 py-2 text-sm font-extrabold text-[#007C89]">
               <TrophyIcon />
-              Hue Challenge
+              {t.ranking.brand}
             </div>
             <h1 className="text-3xl font-black leading-tight tracking-tight text-[#006C78] sm:text-5xl">
-              Bảng xếp hạng
+              {t.ranking.title}
             </h1>
             <p className="mt-2 max-w-xl text-sm font-semibold leading-6 text-[#546E7A] sm:text-base">
-              Top người chơi có độ chính xác cao nhất, ưu tiên thời gian hoàn
-              thành nhanh hơn khi bằng điểm.
+              {t.ranking.description}
             </p>
           </div>
 
@@ -238,7 +239,7 @@ const Ranking: React.FC = () => {
             className="inline-flex items-center justify-center gap-2 rounded-2xl bg-[#006C78] px-5 py-3 text-sm font-black text-white shadow-lg shadow-cyan-900/20 transition active:scale-95"
           >
             <span aria-hidden="true">←</span>
-            Về trang chủ
+            {t.ranking.backHome}
           </Link>
         </div>
         {/* Thay đổi grid-cols-2 trên mobile và sm:grid-cols-3 */}
@@ -246,7 +247,7 @@ const Ranking: React.FC = () => {
           {/* Thẻ 1 */}
           <div className="flex items-center justify-between gap-2 rounded-2xl bg-[#F1FBFC] px-3 py-2.5 sm:px-4">
             <div className="min-w-0 truncate text-[10px] font-black uppercase tracking-wider text-[#00ACC1] sm:text-[11px] sm:tracking-widest">
-              Người chơi
+              {t.ranking.players}
             </div>
             <div className="shrink-0 text-lg font-black text-[#263238] sm:text-xl md:text-2xl">
               {totalPlayers}
@@ -256,7 +257,7 @@ const Ranking: React.FC = () => {
           {/* Thẻ 2 */}
           <div className="flex items-center justify-between gap-2 rounded-2xl bg-[#FFF8DD] px-3 py-2.5 sm:px-4">
             <div className="min-w-0 truncate text-[10px] font-black uppercase tracking-wider text-[#B77900] sm:text-[11px] sm:tracking-widest">
-              Chính xác
+              {t.ranking.accuracy}
             </div>
             <div className="shrink-0 text-lg font-black text-[#263238] sm:text-xl md:text-2xl">
               {bestAccuracy}
@@ -266,7 +267,7 @@ const Ranking: React.FC = () => {
           {/* Thẻ 3: Thêm col-span-2 trên mobile để nó dàn đều đẹp mắt, lên sm thì trả về bình thường */}
           <div className="col-span-2 flex items-center justify-between gap-2 rounded-2xl bg-[#EFF8F0] px-3 py-2.5 sm:col-span-1 sm:px-4">
             <div className="min-w-0 truncate text-[10px] font-black uppercase tracking-wider text-[#2E7D32] sm:text-[11px] sm:tracking-widest">
-              Thời gian tốt nhất
+              {t.ranking.bestTime}
             </div>
             <div className="shrink-0 text-lg font-black text-[#263238] sm:text-xl md:text-2xl">
               {bestTime}s
@@ -277,7 +278,7 @@ const Ranking: React.FC = () => {
 
       {loading ? (
         <div className="mt-8 rounded-4xl border-4 border-white bg-white/80 p-8 text-center text-lg font-black text-[#00838F] shadow-lg animate-pulse">
-          Đang tải bảng xếp hạng...
+          {t.ranking.loading}
         </div>
       ) : error && ranking.length === 0 ? (
         <div className="mt-8 rounded-4xl border-4 border-white bg-white/80 p-8 text-center font-black text-red-500 shadow-lg">
@@ -287,19 +288,19 @@ const Ranking: React.FC = () => {
         <>
           {visibleRanking.length === 0 ? (
             <section className="mt-6 rounded-4xl border-4 border-white bg-white/90 p-8 text-center font-bold text-[#546E7A] shadow-[0_18px_44px_rgba(0,131,143,0.12)]">
-              Chưa có dữ liệu xếp hạng.
+              {t.ranking.empty}
             </section>
           ) : (
             /* Bỏ overflow-hidden và bg-white của section ngoài để biến các item bên trong thành thẻ độc lập */
             <section className="mt-6 space-y-3">
               {/* Header ẩn trên mobile, hiện trên desktop với giao diện sạch sẽ */}
               <div className="hidden grid-cols-[64px_minmax(0,1.3fr)_96px_92px_88px_150px] items-center gap-3 px-6 py-2 text-[11px] font-black uppercase tracking-widest text-[#007C89]/70 sm:grid">
-                <span>Hạng</span>
-                <span>Tên người chơi</span>
-                <span className="text-center">Đúng/Tổng</span>
-                <span className="text-center">Chính xác</span>
-                <span className="text-center">Thời gian</span>
-                <span className="text-right">Ngày chơi</span>
+                <span>{t.ranking.rank}</span>
+                <span>{t.ranking.playerName}</span>
+                <span className="text-center">{t.ranking.correctTotal}</span>
+                <span className="text-center">{t.ranking.accuracy}</span>
+                <span className="text-center">{t.ranking.time}</span>
+                <span className="text-right">{t.ranking.playedAt}</span>
               </div>
 
               {/* Danh sách các thẻ xếp hạng */}
@@ -341,7 +342,7 @@ const Ranking: React.FC = () => {
                           </div>
                           {isCurrentUser && (
                             <span className="shrink-0 rounded-full bg-[#00838F] px-2 py-0.5 text-[9px] font-black uppercase tracking-wider text-white">
-                              Bạn
+                              {t.ranking.currentUser}
                             </span>
                           )}
                         </div>
@@ -351,7 +352,7 @@ const Ranking: React.FC = () => {
                           <span className="flex min-w-0 items-center gap-0.5">
                             <CalendarIcon className="h-3 w-3 shrink-0 opacity-70" />
                             <span className="truncate">
-                              {formatDate(entry.played_at)}
+                              {formatDate(entry.played_at, t.ranking.noData, t.ranking.dateLocale)}
                             </span>
                           </span>
                           <span className="flex shrink-0 items-center gap-0.5 text-[#2E7D32]">
@@ -383,7 +384,7 @@ const Ranking: React.FC = () => {
                       {/* CỘT 6: NGÀY CHƠI (DESKTOP ONLY) */}
                       <div className="hidden items-center justify-end gap-1 text-xs font-bold text-[#546E7A] sm:flex">
                         <CalendarIcon className="h-4 w-4 opacity-70" />
-                        <span>{formatDate(entry.played_at)}</span>
+                        <span>{formatDate(entry.played_at, t.ranking.noData, t.ranking.dateLocale)}</span>
                       </div>
                     </div>
                   );
@@ -395,7 +396,7 @@ const Ranking: React.FC = () => {
           {/* Vị trí của bạn (Nếu ngoài top 10) */}
           {userName && userRank && userRank > 10 && (
             <div className="mt-6 rounded-2xl border-4 border-white bg-linear-to-r from-[#FFF9C4] to-[#FFF59D] p-4 text-center font-black text-[#8A5A00] shadow-md animate-bounce-short">
-              🎯 Vị trí hiện tại của bạn:{" "}
+              🎯 {t.ranking.currentPosition}{" "}
               <span className="text-xl text-[#6D4C41]">#{userRank}</span>
             </div>
           )}
