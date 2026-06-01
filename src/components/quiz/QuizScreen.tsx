@@ -28,7 +28,7 @@ export default function QuizScreen() {
       <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-4 md:p-6">
         {/* Ảnh câu hỏi - Tối ưu hiển thị */}
         {q.img && (
-          <div className="mb-8 overflow-hidden rounded-2xl">
+          <div className="mb-6 md:mb-8 overflow-hidden rounded-2xl">
             <img
               src={q.img}
               className="w-full h-auto max-h-60 object-cover hover:scale-[1.02] transition-transform duration-500"
@@ -37,7 +37,7 @@ export default function QuizScreen() {
           </div>
         )}
 
-        <h2 className="text-2xl font-extrabold text-gray-800 text-center mb-6 leading-tight">
+        <h2 className="text-2xl font-extrabold text-gray-800 text-center mb-6 md:mb-8 leading-tight">
           {q.q}
         </h2>
 

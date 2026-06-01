@@ -10,7 +10,7 @@ interface Props {
 export const AnswerOption = ({ content, isImg, isCorrect, isWrong, onClick, disabled }: Props) => {
   // Gom nhóm class dựa trên trạng thái
   const baseClass = isImg 
-    ? "p-0 rounded-2xl overflow-hidden" 
+    ? "p-0 aspect-square rounded-2xl overflow-hidden" 
     : "p-4 font-bold text-lg text-left rounded-2xl";
   
   const statusClass = isCorrect 
@@ -26,7 +26,7 @@ export const AnswerOption = ({ content, isImg, isCorrect, isWrong, onClick, disa
       disabled={disabled}
     >
       {isImg ? (
-        <img src={content} className="w-full h-25 object-cover" alt="option" />
+        <img src={content} className="w-full h-full object-cover" alt="option" />
       ) : (
         <span>{content}</span>
       )}
