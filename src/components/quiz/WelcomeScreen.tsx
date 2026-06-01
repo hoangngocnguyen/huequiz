@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { useQuizStore } from "../../stores/useQuizStore";
-import { LanguageSwitcher } from "../LanguageSwitcher";
 import { useTranslation } from "../../hooks/useTranslation";
 
 export default function WelcomeScreen() {
@@ -8,8 +7,6 @@ export default function WelcomeScreen() {
   const t = useTranslation(); // Lấy đối tượng dịch thuật dựa trên ngôn ngữ hiện tại (Nó là một mảng dict)
   return (
     <div className="relative w-full max-w-xl mx-auto px-4 py-6 sm:py-10">
-      <LanguageSwitcher />
-
       <div className="text-center mt-12">
         <div className="relative inline-block mb-6">
           <span className="text-8xl">🪷</span>

@@ -11,7 +11,7 @@ export const AnswerOption = ({ content, isImg, isCorrect, isWrong, onClick, disa
   // Gom nhóm class dựa trên trạng thái
   const baseClass = isImg 
     ? "p-0 rounded-2xl overflow-hidden" 
-    : "p-5 font-bold text-lg text-left rounded-2xl";
+    : "p-4 font-bold text-lg text-left rounded-2xl";
   
   const statusClass = isCorrect 
     ? "correct-ans" 

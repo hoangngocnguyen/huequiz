@@ -11,39 +11,46 @@ export default function QuizScreen() {
   const isImgAnswers = q.optsType === "image";
 
   return (
-    <div>
-      <div className="flex justify-between items-end mb-4 px-2 py-2">
-        <h2 className="text-2xl font-black text-[#00838F]">{t.quiz.title}</h2>
-        <span className="bg-white px-4 py-1 rounded-full text-[#00ACC1] font-bold shadow-sm text-sm border-2 border-[#B2EBF2]">
-          {cur + 1}/{questions.length}
+    <div className="">
+      <div className="flex justify-center mt-2 mb-1">
+        <span className="px-5 py-1.5  text-[#00838F] font-bold text-sm sm:text-base tracking-wider uppercase">
+          {cur + 1} / {questions.length}
         </span>
       </div>
-      <div className="progress-bar mb-6">
+      {/* Progress Bar với thiết kế tinh tế */}
+      <div className="relative w-full h-2 bg-gray-200 rounded-full mb-8 overflow-hidden">
         <div
-          className="progress-inner h-full transition-all duration-700"
+          className="h-full bg-linear-to-r from-[#00838F] to-[#00ACC1] transition-all duration-500"
           style={{ width: `${((cur + 1) / questions.length) * 100}%` }}
         />
       </div>
 
-      <div className="tropical-card p-5 mb-6">
+      <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/50 p-4 md:p-6">
+        {/* Ảnh câu hỏi - Tối ưu hiển thị */}
         {q.img && (
-          <img
-            src={q.img}
-            className="w-full h-48 mb-6 object-cover rounded-4xl"
-            alt={t.quiz.questionImageAlt}
-          />
+          <div className="mb-8 overflow-hidden rounded-2xl">
+            <img
+              src={q.img}
+              className="w-full h-auto max-h-60 object-cover hover:scale-[1.02] transition-transform duration-500"
+              alt={t.quiz.questionImageAlt}
+            />
+          </div>
         )}
-        <h2 className="text-xl font-bold text-center mb-6">{q.q}</h2>
 
-        <div className={isImgAnswers ? "grid-layout" : "space-y-4"}>
+        <h2 className="text-2xl font-extrabold text-gray-800 text-center mb-6 leading-tight">
+          {q.q}
+        </h2>
+
+        {/* Layout grid thông minh */}
+        <div
+          className={`gap-4 ${isImgAnswers ? "grid grid-cols-2 md:grid-cols-2" : "flex flex-col"}`}
+        >
           {q.opts.map((o, i) => (
             <AnswerOption
               key={i}
               content={o}
               isImg={isImgAnswers}
-              // Dùng !! để đảm bảo luôn trả về true/false
               isCorrect={!!(showAnswer && i === q.ans)}
-              // Tương tự cho isWrong
               isWrong={
                 !!(showAnswer && showAnswer.idx === i && !showAnswer.correct)
               }

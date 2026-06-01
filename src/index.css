@@ -1,5 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Send+Flowers&display=swap');
 @import "tailwindcss";
+
+@theme {
+  --font-handwriting: 'Send Flowers', cursive;
+}
 
 body {
   font-family: 'Quicksand', sans-serif;
@@ -23,7 +28,7 @@ body {
   border: 2px solid #B2EBF2;
   border-radius: 1.5rem;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 4px 0 #B2EBF2;
+  box-shadow: 0 2px 0 #B2EBF2;
   display: flex;
   align-items: center;
   justify-content: center;
