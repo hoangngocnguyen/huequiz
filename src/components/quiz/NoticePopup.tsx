@@ -1,6 +1,8 @@
+import { useTranslation } from "../../hooks/useTranslation";
 import { useQuizStore } from "../../stores/useQuizStore";
 
 export const NoticePopup = () => {
+  const t = useTranslation();
   const notice = useQuizStore((state) => state.notice);
   const setNotice = useQuizStore((state) => state.setNotice);
 
@@ -32,7 +34,7 @@ export const NoticePopup = () => {
           onClick={() => setNotice(null)}
           className="mt-5 w-full rounded-2xl bg-[#006C78] px-5 py-3 text-sm font-black text-white shadow-lg shadow-cyan-900/20 active:scale-95"
         >
-          Đóng
+          {t.result.closeNotice}
         </button>
       </div>
     </div>

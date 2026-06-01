@@ -2,7 +2,30 @@ export interface TranslationDict {
   welcome: { title: string; description: string; start: string, viewRanking: string, footer: string };
   loading: { questions: string };
   quiz: { title: string; questionImageAlt: string; next: string; finish: string };
-  result: { score: string; playAgain: string };
+  result: {
+    score: string;
+    playAgain: string;
+    completed: string;
+    time: string;
+    seconds: string;
+    namePlaceholder: string;
+    saving: string;
+    saveScore: string;
+    scoreSaved: string;
+    viewRanking: string;
+    closeNotice: string;
+    missingNameTitle: string;
+    missingNameMessage: string;
+    saveSuccessTitle: string;
+    saveSuccessMessage: string;
+    saveErrorTitle: string;
+    saveErrorMessage: string;
+    connectionErrorTitle: string;
+    connectionErrorMessage: string;
+    explorerMessage: string;
+    masterMessage: string;
+    fanMessage: string;
+  };
   ranking: {
     brand: string;
     title: string;

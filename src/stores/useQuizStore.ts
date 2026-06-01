@@ -31,6 +31,17 @@ export type QuizNotice = {
   tone: "success" | "error" | "info";
 };
 
+type SaveRankCopy = {
+  missingNameTitle: string;
+  missingNameMessage: string;
+  saveSuccessTitle: string;
+  saveSuccessMessage: string;
+  saveErrorTitle: string;
+  saveErrorMessage: string;
+  connectionErrorTitle: string;
+  connectionErrorMessage: string;
+};
+
 export type QuizUi = "welcome" | "loading" | "quiz" | "result";
 
 export const sampleQuestions: Question[] = [];
@@ -108,7 +119,7 @@ type QuizStore = {
   fetchQuestions: () => Promise<void>;
   startQuiz: () => Promise<void>;
   handleAnswer: (idx: number) => void;
-  saveRank: () => Promise<void>;
+  saveRank: (copy?: SaveRankCopy) => Promise<void>;
   setUserName: (name: string) => void;
   setNotice: (notice: QuizNotice | null) => void;
 };
@@ -207,15 +218,17 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
     }, 1200);
   },
 
-  saveRank: async () => {
+  saveRank: async (copy) => {
     const state = get();
     if (state.saving || state.savedRank) return;
 
     if (!state.userName) {
       set({
         notice: {
-          title: "Thiếu tên rồi",
-          message: "Vui lòng nhập tên của bạn trước khi lưu điểm nhé.",
+          title: copy?.missingNameTitle || "Thiếu tên rồi",
+          message:
+            copy?.missingNameMessage ||
+            "Vui lòng nhập tên của bạn trước khi lưu điểm nhé.",
           tone: "info",
         },
       });
@@ -254,18 +267,23 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
         set({
           savedRank: true,
           notice: {
-            title: "Đã lưu điểm thành công",
-            message: `Chúc mừng ${state.userName}! Độ chính xác của bạn đạt ${
-              (state.score / state.questions.length) * 100
-            }%. Thời gian hoàn thành: ${timeSec} giây.`,
+            title: copy?.saveSuccessTitle || "Đã lưu điểm thành công",
+            message: (
+              copy?.saveSuccessMessage ||
+              "Chúc mừng {name}! Độ chính xác của bạn đạt {accuracy}%. Thời gian hoàn thành: {time} giây."
+            )
+              .replace("{name}", state.userName)
+              .replace("{accuracy}", String(accuracy))
+              .replace("{time}", String(timeSec)),
             tone: "success",
           },
         });
       } else {
         set({
           notice: {
-            title: "Không thể lưu điểm",
+            title: copy?.saveErrorTitle || "Không thể lưu điểm",
             message:
+              copy?.saveErrorMessage ||
               "Hệ thống chưa ghi nhận được điểm số. Bạn vui lòng thử lại sau vài giây nhé.",
             tone: "error",
           },
@@ -274,8 +292,9 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
     } catch {
       set({
         notice: {
-          title: "Lỗi kết nối",
+          title: copy?.connectionErrorTitle || "Lỗi kết nối",
           message:
+            copy?.connectionErrorMessage ||
             "Không thể kết nối tới máy chủ để cập nhật bảng xếp hạng. Hãy kiểm tra lại mạng nhé.",
           tone: "error",
         },
