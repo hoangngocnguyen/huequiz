@@ -1,13 +1,24 @@
 import { useQuizStore } from "../../stores/useQuizStore";
 import { AnswerOption } from "./AnswerOption";
 import { useTranslation } from "../../hooks/useTranslation";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function QuizScreen() {
-  const { questions, cur, showAnswer, handleAnswer } = useQuizStore();
+  const navigate = useNavigate();
+  const { questions, cur, showAnswer, handleAnswer, endTime } = useQuizStore();
   const t = useTranslation();
   const q = questions[cur] || questions[0];
-  if (!q) return null;
 
+  // Chuyển hướng trang ở câu cuối cùng
+  useEffect(() => {
+    if (endTime !== null) {
+      navigate("/result", { replace: true });
+    }
+  }, [endTime, navigate]);
+
+
+  if (!q) return null;
   const isImgAnswers = q.optsType === "image";
 
   return (

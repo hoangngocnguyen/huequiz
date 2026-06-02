@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { useUIStore } from "./useUIStore";
 
 
 export type Language = "en" | "vi";
@@ -41,8 +42,6 @@ type SaveRankCopy = {
   connectionErrorTitle: string;
   connectionErrorMessage: string;
 };
-
-export type QuizUi = "welcome" | "loading" | "quiz" | "result";
 
 export const sampleQuestions: Question[] = [];
 
@@ -109,7 +108,6 @@ type QuizStore = {
   score: number;
   startTime: number | null;
   endTime: number | null;
-  ui: QuizUi;
   userName: string;
   saving: boolean;
   savedRank: boolean;
@@ -124,7 +122,9 @@ type QuizStore = {
   setNotice: (notice: QuizNotice | null) => void;
 };
 
-let loadingTimer: ReturnType<typeof setInterval> | null = null;
+const loadingTimer: ReturnType<typeof setInterval> | null = null;
+
+
 
 export const useQuizStore = create<QuizStore>((set, get) => ({
   questions: readCachedQuestions() || sampleQuestions,
@@ -132,7 +132,6 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
   score: 0,
   startTime: null,
   endTime: null,
-  ui: "welcome",
   userName: localStorage.getItem("quizUserName") || "",
   saving: false,
   savedRank: false,
@@ -167,8 +166,9 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
   startQuiz: async () => {
     if (loadingTimer) clearInterval(loadingTimer);
 
+    // Bật loading và reset trạng thái quiz
+    useUIStore.getState().setIsLoading(true);
     set({
-      ui: "loading",
       cur: 0,
       score: 0,
       startTime: null,
@@ -182,18 +182,10 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
     });
 
     await get().fetchQuestions();
+    set({startTime: Date.now() });
 
-    let t = 3;
-    set({ loadingTime: t });
-    loadingTimer = setInterval(() => {
-      t -= 1;
-      set({ loadingTime: t });
-      if (t <= 0) {
-        if (loadingTimer) clearInterval(loadingTimer);
-        loadingTimer = null;
-        set({ ui: "quiz", startTime: Date.now() });
-      }
-    }, 1000);
+    // Tắt loading
+    useUIStore.getState().setIsLoading(false);
   },
 
   handleAnswer: (idx) => {
@@ -211,7 +203,8 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
       const isLastQuestion = state.cur + 1 >= state.questions.length;
 
       if (isLastQuestion) {
-        set({ showAnswer: null, ui: "result", endTime: Date.now() });
+        // Chỉ reset showAnswer, còn endTime để lưu lại để tính toán kết quả và hỗ trợ logic navigate result page.
+        set({ showAnswer: null, endTime: Date.now() });
       } else {
         set({ showAnswer: null, cur: state.cur + 1 });
       }

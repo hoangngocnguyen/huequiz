@@ -1,10 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuizStore } from "../../stores/useQuizStore";
 import { useTranslation } from "../../hooks/useTranslation";
 
 export default function WelcomeScreen() {
+  const navigate = useNavigate();
   const { startQuiz } = useQuizStore();
   const t = useTranslation(); // Lấy đối tượng dịch thuật dựa trên ngôn ngữ hiện tại (Nó là một mảng dict)
+  
+  const handleStart = async () => {
+    await startQuiz();
+    navigate("/quiz");
+  }
   return (
     <div className="relative w-full max-w-xl mx-auto px-4 py-6 sm:py-10">
       <div className="text-center mt-12">
@@ -23,7 +29,7 @@ export default function WelcomeScreen() {
         </p>
 
         <button
-          onClick={startQuiz}
+          onClick={handleStart}
           className="animate-pulse w-full py-5 bg-[#00838F] text-white text-2xl font-black rounded-3xl transition-all active:scale-95"
         >
           {t.welcome.start}
