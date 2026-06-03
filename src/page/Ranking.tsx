@@ -208,7 +208,7 @@ const Ranking: React.FC = () => {
     fetchRanking();
   }, [t, userName]);
 
-  const visibleRanking = useMemo(() => ranking.slice(0, 10), [ranking]);
+  const visibleRanking = useMemo(() => ranking.slice(0, 100), [ranking]);
   const totalPlayers = ranking.length;
   const bestAccuracy = ranking[0] ? formatAccuracy(ranking[0].accuracy) : "0%";
   const bestTime = ranking.length
