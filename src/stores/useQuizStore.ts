@@ -81,6 +81,38 @@ const writeCachedQuestions = (questions: Question[]) => {
   }
 };
 
+// Preload images to avoid visible loading when switching questions.
+const preloadImages = (urls: string[]) => {
+  if (!urls || urls.length === 0) return;
+  const imgs: HTMLImageElement[] = [];
+  urls.forEach((u) => {
+    try {
+      const img = new Image();
+      img.src = u;
+      imgs.push(img);
+    } catch {
+      // ignore individual image failures
+    }
+  });
+  // Keep references briefly to avoid immediate GC
+  try {
+    const globalRef = globalThis as unknown as { __hueQuizPreloaded?: HTMLImageElement[] };
+    globalRef.__hueQuizPreloaded = (globalRef.__hueQuizPreloaded || []).concat(imgs);
+  } catch {
+    // If window isn't available for some reason, ignore
+  }
+};
+
+const preloadImagesFromQuestions = (questions: Question[] | null) => {
+  if (!questions || !Array.isArray(questions)) return;
+  const urls: string[] = [];
+  questions.forEach((q) => {
+    if (q.img) urls.push(q.img);
+    if (q.optsType === "image" && Array.isArray(q.opts)) urls.push(...q.opts);
+  });
+  preloadImages(urls);
+};
+
 const sortRanking = (entries: RankingEntry[]) => {
   return [...entries].sort((a, b) => {
     if (b.accuracy !== a.accuracy) return b.accuracy - a.accuracy;
@@ -146,6 +178,7 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
     const cachedQuestions = readCachedQuestions();
     if (cachedQuestions) {
       set({ questions: cachedQuestions });
+      preloadImagesFromQuestions(cachedQuestions);
       return;
     }
 
@@ -156,10 +189,12 @@ export const useQuizStore = create<QuizStore>((set, get) => ({
       if (isQuestionList(data)) {
         writeCachedQuestions(data);
         set({ questions: data });
+        preloadImagesFromQuestions(data);
       }
     } catch {
       console.warn("Không thể tải câu hỏi từ server, dùng dữ liệu mẫu.");
       set({ questions: sampleQuestions });
+      preloadImagesFromQuestions(sampleQuestions);
     }
   },
 
