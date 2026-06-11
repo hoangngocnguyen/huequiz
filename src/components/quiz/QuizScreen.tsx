@@ -17,7 +17,6 @@ export default function QuizScreen() {
     }
   }, [endTime, navigate]);
 
-
   if (!q) return null;
   const isImgAnswers = q.optsType === "image";
 
