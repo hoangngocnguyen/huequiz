@@ -16,7 +16,7 @@ function App() {
 console.log(startTime);
 
   return (
-    <Router basename="/huequiz">
+    <Router>
       <Routes>
         <Route path="/" element={<HueQuiz />}>
           <Route index element={<WelcomeScreen />} />
