@@ -4,11 +4,11 @@ import tailwindcss from '@tailwindcss/vite'
 import path from 'path'
 
 export default defineConfig({
+  base: "/", // Đưa về gốc cho chuẩn Vercel
   plugins: [
     react(),
     tailwindcss(),
   ],
-  base: "/huequiz/",
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
